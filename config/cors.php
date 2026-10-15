@@ -18,7 +18,7 @@ return [
 
     "allowed_methods" => ["*"],
 
-    "allowed_origins" => ["http://localhost:5173", "https://asellatravel.com"],
+    "allowed_origins" => ["http://localhost:8081", "https://asellatravel.com"],
 
     "allowed_origins_patterns" => [],
 
