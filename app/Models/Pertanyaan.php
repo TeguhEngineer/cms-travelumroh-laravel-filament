@@ -8,17 +8,15 @@ use Illuminate\Support\Str;
 class Pertanyaan extends Model
 {
     protected $fillable = [
-        'documentId',
-        'pertanyaan',
-        'jawaban',
-        'kategori',
-        'aktif',
-        'urutan',
+        "documentId",
+        "pertanyaan",
+        "jawaban",
+        "kategori",
+        "aktif",
     ];
 
     protected $casts = [
-        'aktif' => 'boolean',
-        'urutan' => 'integer',
+        "aktif" => "boolean",
     ];
 
     // Auto-generate documentId
@@ -28,7 +26,7 @@ class Pertanyaan extends Model
 
         static::creating(function ($pertanyaan) {
             if (empty($pertanyaan->documentId)) {
-                $pertanyaan->documentId = 'faq_' . Str::random(20);
+                $pertanyaan->documentId = "faq_" . Str::random(20);
             }
         });
     }

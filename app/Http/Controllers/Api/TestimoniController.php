@@ -19,7 +19,7 @@ class TestimoniController extends Controller
         $query = Testimoni::query();
 
         $this->applyFilters($query, $request, ["aktif"]);
-        $this->applySorting($query, $request, "urutan");
+        $this->applySorting($query, $request, "-created_at");
 
         $params = $this->getPaginationParams($request);
         $testimonis = $query->paginate($params["per_page"]);

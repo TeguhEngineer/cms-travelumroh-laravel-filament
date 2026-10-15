@@ -8,18 +8,16 @@ use Illuminate\Support\Str;
 class VideoYoutube extends Model
 {
     protected $fillable = [
-        'documentId',
-        'judul',
-        'url_youtube',
-        'thumbnail',
-        'deskripsi',
-        'aktif',
-        'urutan',
+        "documentId",
+        "judul",
+        "url_youtube",
+        "thumbnail",
+        "deskripsi",
+        "aktif",
     ];
 
     protected $casts = [
-        'aktif' => 'boolean',
-        'urutan' => 'integer',
+        "aktif" => "boolean",
     ];
 
     // Auto-generate documentId
@@ -29,7 +27,7 @@ class VideoYoutube extends Model
 
         static::creating(function ($video) {
             if (empty($video->documentId)) {
-                $video->documentId = 'video_' . Str::random(20);
+                $video->documentId = "video_" . Str::random(20);
             }
         });
     }

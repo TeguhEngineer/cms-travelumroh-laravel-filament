@@ -8,18 +8,16 @@ use Illuminate\Support\Str;
 class Gallery extends Model
 {
     protected $fillable = [
-        'documentId',
-        'judul',
-        'deskripsi',
-        'url_foto',
-        'lokasi',
-        'aktif',
-        'urutan',
+        "documentId",
+        "judul",
+        "deskripsi",
+        "url_foto",
+        "lokasi",
+        "aktif",
     ];
 
     protected $casts = [
-        'aktif' => 'boolean',
-        'urutan' => 'integer',
+        "aktif" => "boolean",
     ];
 
     // Auto-generate documentId
@@ -29,7 +27,7 @@ class Gallery extends Model
 
         static::creating(function ($gallery) {
             if (empty($gallery->documentId)) {
-                $gallery->documentId = 'gallery_' . Str::random(20);
+                $gallery->documentId = "gallery_" . Str::random(20);
             }
         });
     }

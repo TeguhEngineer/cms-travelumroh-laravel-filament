@@ -8,20 +8,18 @@ use Illuminate\Support\Str;
 class Testimoni extends Model
 {
     protected $fillable = [
-        'documentId',
-        'nama',
-        'foto',
-        'isi_testimoni',
-        'rating',
-        'paket_diikuti',
-        'aktif',
-        'urutan',
+        "documentId",
+        "nama",
+        "foto",
+        "isi_testimoni",
+        "rating",
+        "paket_diikuti",
+        "aktif",
     ];
 
     protected $casts = [
-        'rating' => 'integer',
-        'aktif' => 'boolean',
-        'urutan' => 'integer',
+        "rating" => "integer",
+        "aktif" => "boolean",
     ];
 
     // Auto-generate documentId
@@ -31,7 +29,7 @@ class Testimoni extends Model
 
         static::creating(function ($testimoni) {
             if (empty($testimoni->documentId)) {
-                $testimoni->documentId = 'testimoni_' . Str::random(20);
+                $testimoni->documentId = "testimoni_" . Str::random(20);
             }
         });
     }

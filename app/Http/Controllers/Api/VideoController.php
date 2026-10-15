@@ -19,7 +19,7 @@ class VideoController extends Controller
         $query = VideoYoutube::query();
 
         $this->applyFilters($query, $request, ["aktif"]);
-        $this->applySorting($query, $request, "urutan");
+        $this->applySorting($query, $request, "-created_at");
 
         $params = $this->getPaginationParams($request);
         $videos = $query->paginate($params["per_page"]);

@@ -61,11 +61,6 @@ class TestimoniResource extends Resource
                 ->required()
                 ->default(true)
                 ->label("Aktif"),
-
-            Forms\Components\TextInput::make("urutan")
-                ->numeric()
-                ->default(0)
-                ->label("Urutan Tampil"),
         ]);
     }
 
@@ -100,11 +95,6 @@ class TestimoniResource extends Resource
                 Tables\Columns\IconColumn::make("aktif")
                     ->boolean()
                     ->label("Status"),
-
-                Tables\Columns\TextColumn::make("urutan")
-                    ->numeric()
-                    ->sortable()
-                    ->label("Urutan"),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make("aktif")
@@ -132,7 +122,7 @@ class TestimoniResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort("urutan", "asc");
+            ->defaultSort("created_at", "desc");
     }
 
     public static function getRelations(): array

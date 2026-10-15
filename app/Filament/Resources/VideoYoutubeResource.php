@@ -52,11 +52,6 @@ class VideoYoutubeResource extends Resource
                 ->required()
                 ->default(true)
                 ->label("Aktif"),
-
-            Forms\Components\TextInput::make("urutan")
-                ->numeric()
-                ->default(0)
-                ->label("Urutan Tampil"),
         ]);
     }
 
@@ -76,11 +71,6 @@ class VideoYoutubeResource extends Resource
                 Tables\Columns\IconColumn::make("aktif")
                     ->boolean()
                     ->label("Status"),
-
-                Tables\Columns\TextColumn::make("urutan")
-                    ->numeric()
-                    ->sortable()
-                    ->label("Urutan"),
 
                 Tables\Columns\TextColumn::make("created_at")
                     ->dateTime()
@@ -103,7 +93,7 @@ class VideoYoutubeResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort("urutan", "asc");
+            ->defaultSort("created_at", "desc");
     }
 
     public static function getRelations(): array

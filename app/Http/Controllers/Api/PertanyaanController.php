@@ -19,7 +19,7 @@ class PertanyaanController extends Controller
         $query = Pertanyaan::query();
 
         $this->applyFilters($query, $request, ["aktif"]);
-        $this->applySorting($query, $request, "urutan");
+        $this->applySorting($query, $request, "created_at");
 
         $params = $this->getPaginationParams($request);
         $pertanyaans = $query->paginate($params["per_page"]);

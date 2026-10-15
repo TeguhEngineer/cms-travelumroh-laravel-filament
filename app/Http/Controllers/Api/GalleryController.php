@@ -21,7 +21,7 @@ class GalleryController extends Controller
         $query = Gallery::query();
 
         $this->applyFilters($query, $request, ["aktif"]);
-        $this->applySorting($query, $request, "urutan");
+        $this->applySorting($query, $request, "-created_at");
 
         $params = $this->getPaginationParams($request);
         $galleries = $query->paginate($params["per_page"]);
