@@ -140,35 +140,22 @@ class PaketHajiResource extends Resource
                     Forms\Components\Tabs\Tab::make("Detail Paket")
                         ->icon("heroicon-o-squares-plus")
                         ->schema([
-                            Forms\Components\Repeater::make("fasilitasDetails")
-                                ->relationship()
-                                ->schema([
-                                    Forms\Components\Select::make(
-                                        "fasilitas_id",
-                                    )
-                                        ->relationship(
-                                            name: "fasilitas",
-                                            titleAttribute: "nama_fasilitas",
-                                            modifyQueryUsing: fn(
-                                                Builder $query,
-                                            ) => $query
-                                                ->whereIn("kategori", [
-                                                    "haji",
-                                                    "umum",
-                                                ])
-                                                ->where("aktif", true),
-                                        )
-                                        ->required()
-                                        ->searchable()
-                                        ->preload()
-                                        ->disableOptionsWhenSelectedInSiblingRepeaterItems()
-                                        ->label("Fasilitas"),
-                                ])
+                            Forms\Components\CheckboxList::make("fasilitas")
+                                ->relationship(
+                                    titleAttribute: "nama_fasilitas",
+                                    modifyQueryUsing: fn(
+                                        Builder $query,
+                                    ) => $query
+                                        ->whereIn("kategori", ["haji", "umum"])
+                                        ->where("aktif", true),
+                                )
+                                ->searchable()
+                                ->columns(2)
                                 ->columnSpanFull()
-                                ->collapsible()
                                 ->label("Fasilitas Paket")
-                                ->addActionLabel("Tambah Fasilitas")
-                                ->defaultItems(0),
+                                ->helperText(
+                                    "Pilih satu atau beberapa fasilitas",
+                                ),
 
                             Forms\Components\Repeater::make("hotelDetails")
                                 ->relationship()
