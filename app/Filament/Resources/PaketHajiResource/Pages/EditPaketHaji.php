@@ -10,10 +10,10 @@ class EditPaketHaji extends EditRecord
 {
     protected static string $resource = PaketHajiResource::class;
 
+    protected static ?string $title = "Edit Paket Haji";
+
     protected function getHeaderActions(): array
     {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+        return [Actions\DeleteAction::make()];
     }
 }

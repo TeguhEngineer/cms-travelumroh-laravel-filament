@@ -23,6 +23,9 @@ class PaketResource extends Resource
 
     protected static ?int $navigationSort = 10;
 
+    // Hidden from navigation - replaced by PaketUmrohResource & PaketHajiResource
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function form(Form $form): Form
     {
         return $form->schema([

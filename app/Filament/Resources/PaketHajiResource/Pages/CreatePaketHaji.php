@@ -8,4 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePaketHaji extends CreateRecord
 {
     protected static string $resource = PaketHajiResource::class;
+
+    protected static ?string $title = "Tambah Paket Haji";
 }

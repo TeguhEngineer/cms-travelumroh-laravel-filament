@@ -10,10 +10,10 @@ class ListPaketHajis extends ListRecords
 {
     protected static string $resource = PaketHajiResource::class;
 
+    protected static ?string $title = "Paket Haji";
+
     protected function getHeaderActions(): array
     {
-        return [
-            Actions\CreateAction::make(),
-        ];
+        return [Actions\CreateAction::make()];
     }
 }

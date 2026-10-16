@@ -10,10 +10,10 @@ class EditPaketUmroh extends EditRecord
 {
     protected static string $resource = PaketUmrohResource::class;
 
+    protected static ?string $title = "Edit Paket Umroh";
+
     protected function getHeaderActions(): array
     {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+        return [Actions\DeleteAction::make()];
     }
 }

@@ -10,10 +10,10 @@ class ListPaketUmrohs extends ListRecords
 {
     protected static string $resource = PaketUmrohResource::class;
 
+    protected static ?string $title = "Paket Umroh";
+
     protected function getHeaderActions(): array
     {
-        return [
-            Actions\CreateAction::make(),
-        ];
+        return [Actions\CreateAction::make()];
     }
 }
