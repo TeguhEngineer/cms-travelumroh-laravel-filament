@@ -11,6 +11,7 @@ class Hotel extends Model
         "documentId",
         "nama_hotel",
         "lokasi",
+        "deskripsi_hotel",
         "rating",
         "aktif",
     ];

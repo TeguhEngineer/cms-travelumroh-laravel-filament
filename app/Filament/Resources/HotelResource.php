@@ -35,6 +35,12 @@ class HotelResource extends Resource
                 ->maxLength(255)
                 ->label("Lokasi"),
 
+            Forms\Components\Textarea::make("deskripsi_hotel")
+                ->rows(3)
+                ->columnSpanFull()
+                ->label("Deskripsi Hotel")
+                ->helperText("Contoh: jarak ke masjid, fasilitas kamar, dll"),
+
             Forms\Components\TextInput::make("rating")
                 ->required()
                 ->numeric()
