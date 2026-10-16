@@ -29,8 +29,8 @@ class Perjalanan extends Model
         });
     }
 
-    public function paketDetails()
+    public function paketPerjalananDetails()
     {
-        return $this->hasMany(PaketDetail::class);
+        return $this->hasMany(PaketPerjalananDetail::class);
     }
 }

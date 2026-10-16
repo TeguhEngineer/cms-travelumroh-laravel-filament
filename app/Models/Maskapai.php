@@ -29,8 +29,8 @@ class Maskapai extends Model
         });
     }
 
-    public function paketDetails()
+    public function paketMaskapaiDetails()
     {
-        return $this->hasMany(PaketDetail::class);
+        return $this->hasMany(PaketMaskapaiDetail::class);
     }
 }

@@ -16,26 +16,31 @@ class PaketController extends Controller
      * Get all pakets with filters, sorting, and pagination
      *
      * Query params (Laravel style):
-     * - ?active=1 (filter by active status)
-     * - ?kategori=umroh (filter by category)
+     * - ?aktif=1 (filter by active status)
+     * - ?type=umrah (filter by package type)
      * - ?sort=-created_at (sort descending)
-     * - ?sort=urutan (sort ascending, default)
      * - ?per_page=25&page=2 (pagination)
-     * - ?with_relations=1 (eager load penerbangan & fasilitas)
+     * - ?with_relations=1 (eager load all detail relations)
      */
     public function index(Request $request)
     {
         $query = Paket::query();
 
-        // Apply filters: ?aktif=1&kategori=umroh
-        $this->applyFilters($query, $request, ["aktif", "kategori"]);
+        // Apply filters: ?aktif=1&type=umrah
+        $this->applyFilters($query, $request, ["aktif", "type"]);
 
-        // Apply sorting: ?sort=-created_at or ?sort=urutan
-        $this->applySorting($query, $request, "urutan");
+        // Apply sorting: ?sort=-created_at
+        $this->applySorting($query, $request, "-created_at");
 
         // Eager load relations if requested: ?with_relations=1
         if ($request->input("with_relations")) {
-            $query->with(["paketDetails"]);
+            $query->with([
+                "fasilitasDetails.fasilitas",
+                "hotelDetails.hotel",
+                "maskapaiDetails.maskapai",
+                "pembimbingDetails.pembimbing",
+                "perjalananDetails.perjalanan",
+            ]);
         }
 
         // Pagination: ?per_page=25&page=2
@@ -52,8 +57,14 @@ class PaketController extends Controller
     {
         $query = Paket::where("slug", $slug);
 
-        // Auto-populate relations for detail page
-        $query->with(["paketDetails"]);
+        // Auto-populate all detail relations for detail page
+        $query->with([
+            "fasilitasDetails.fasilitas",
+            "hotelDetails.hotel",
+            "maskapaiDetails.maskapai",
+            "pembimbingDetails.pembimbing",
+            "perjalananDetails.perjalanan",
+        ]);
 
         $paket = $query->firstOrFail();
 

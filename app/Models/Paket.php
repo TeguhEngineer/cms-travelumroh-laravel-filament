@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Paket extends Model
@@ -41,74 +40,67 @@ class Paket extends Model
         "published_at" => "datetime",
     ];
 
-    // Relationships
-    public function paketDetails()
+    // Detail relations (optional, bisa kosong)
+    public function fasilitasDetails()
     {
-        return $this->hasMany(PaketDetail::class);
+        return $this->hasMany(PaketFasilitasDetail::class);
     }
 
-    // Helper methods to get related master data through paketDetails
+    public function hotelDetails()
+    {
+        return $this->hasMany(PaketHotelDetail::class);
+    }
+
+    public function maskapaiDetails()
+    {
+        return $this->hasMany(PaketMaskapaiDetail::class);
+    }
+
+    public function pembimbingDetails()
+    {
+        return $this->hasMany(PaketPembimbingDetail::class);
+    }
+
+    public function perjalananDetails()
+    {
+        return $this->hasMany(PaketPerjalananDetail::class);
+    }
+
+    // Shortcut ke master via detail
     public function fasilitas()
     {
-        return $this->hasManyThrough(
+        return $this->belongsToMany(
             Fasilitas::class,
-            PaketDetail::class,
-            "paket_id",
-            "id",
-            "id",
-            "fasilitas_id",
+            "paket_fasilitas_details",
         );
     }
 
     public function hotels()
     {
-        return $this->hasManyThrough(
-            Hotel::class,
-            PaketDetail::class,
-            "paket_id",
-            "id",
-            "id",
-            "hotel_id",
-        );
+        return $this->belongsToMany(Hotel::class, "paket_hotel_details");
     }
 
     public function maskapais()
     {
-        return $this->hasManyThrough(
-            Maskapai::class,
-            PaketDetail::class,
-            "paket_id",
-            "id",
-            "id",
-            "maskapai_id",
-        );
+        return $this->belongsToMany(Maskapai::class, "paket_maskapai_details");
     }
 
     public function pembimbings()
     {
-        return $this->hasManyThrough(
+        return $this->belongsToMany(
             Pembimbing::class,
-            PaketDetail::class,
-            "paket_id",
-            "id",
-            "id",
-            "pembimbing_id",
+            "paket_pembimbing_details",
         );
     }
 
     public function perjalanans()
     {
-        return $this->hasManyThrough(
+        return $this->belongsToMany(
             Perjalanan::class,
-            PaketDetail::class,
-            "paket_id",
-            "id",
-            "id",
-            "perjalanan_id",
+            "paket_perjalanan_details",
         );
     }
 
-    // Auto-generate slug and documentId
     protected static function boot()
     {
         parent::boot();

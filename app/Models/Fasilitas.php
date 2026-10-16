@@ -25,8 +25,8 @@ class Fasilitas extends Model
         });
     }
 
-    public function paketDetails()
+    public function paketFasilitasDetails()
     {
-        return $this->hasMany(PaketDetail::class);
+        return $this->hasMany(PaketFasilitasDetail::class);
     }
 }

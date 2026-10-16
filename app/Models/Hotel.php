@@ -31,8 +31,8 @@ class Hotel extends Model
         });
     }
 
-    public function paketDetails()
+    public function paketHotelDetails()
     {
-        return $this->hasMany(PaketDetail::class);
+        return $this->hasMany(PaketHotelDetail::class);
     }
 }

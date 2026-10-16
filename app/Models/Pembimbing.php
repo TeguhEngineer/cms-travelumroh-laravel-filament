@@ -30,8 +30,8 @@ class Pembimbing extends Model
         });
     }
 
-    public function paketDetails()
+    public function paketPembimbingDetails()
     {
-        return $this->hasMany(PaketDetail::class);
+        return $this->hasMany(PaketPembimbingDetail::class);
     }
 }
