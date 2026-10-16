@@ -9,6 +9,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PaketHajiResource\Pages;
 
 class PaketHajiResource extends Resource
@@ -50,8 +51,9 @@ class PaketHajiResource extends Resource
                                 ->label("Slug (URL)")
                                 ->helperText("Otomatis terisi dari nama"),
 
-                            Forms\Components\Hidden::make("type")
-                                ->default("haji"),
+                            Forms\Components\Hidden::make("type")->default(
+                                "haji",
+                            ),
 
                             Forms\Components\FileUpload::make("thumbnail")
                                 ->image()
@@ -135,8 +137,178 @@ class PaketHajiResource extends Resource
                                 ->label("Sisa Seat"),
                         ]),
 
-                    Forms\Components\Tabs\Tab::make("Detail & Status")
-                        ->icon("heroicon-o-cog-6-tooth")
+                    Forms\Components\Tabs\Tab::make("Detail Paket")
+                        ->icon("heroicon-o-squares-plus")
+                        ->schema([
+                            Forms\Components\Repeater::make("fasilitasDetails")
+                                ->relationship()
+                                ->schema([
+                                    Forms\Components\Select::make(
+                                        "fasilitas_id",
+                                    )
+                                        ->relationship(
+                                            name: "fasilitas",
+                                            titleAttribute: "nama_fasilitas",
+                                            modifyQueryUsing: fn(
+                                                Builder $query,
+                                            ) => $query
+                                                ->whereIn("kategori", [
+                                                    "haji",
+                                                    "umum",
+                                                ])
+                                                ->where("aktif", true),
+                                        )
+                                        ->required()
+                                        ->searchable()
+                                        ->preload()
+                                        ->disableOptionsWhenSelectedInSiblingRepeaterItems()
+                                        ->label("Fasilitas"),
+                                ])
+                                ->columnSpanFull()
+                                ->collapsible()
+                                ->label("Fasilitas Paket")
+                                ->addActionLabel("Tambah Fasilitas")
+                                ->defaultItems(0),
+
+                            Forms\Components\Repeater::make("hotelDetails")
+                                ->relationship()
+                                ->schema([
+                                    Forms\Components\Select::make("hotel_id")
+                                        ->relationship(
+                                            name: "hotel",
+                                            titleAttribute: "nama_hotel",
+                                            modifyQueryUsing: fn(
+                                                Builder $query,
+                                            ) => $query->where("aktif", true),
+                                        )
+                                        ->required()
+                                        ->searchable()
+                                        ->preload()
+                                        ->label("Hotel"),
+                                    Forms\Components\DatePicker::make(
+                                        "checkin",
+                                    )->label("Check-in"),
+                                    Forms\Components\DatePicker::make(
+                                        "checkout",
+                                    )->label("Check-out"),
+                                ])
+                                ->columns(3)
+                                ->columnSpanFull()
+                                ->collapsible()
+                                ->label("Hotel Paket")
+                                ->addActionLabel("Tambah Hotel")
+                                ->defaultItems(0),
+
+                            Forms\Components\Repeater::make("maskapaiDetails")
+                                ->relationship()
+                                ->schema([
+                                    Forms\Components\Select::make("maskapai_id")
+                                        ->relationship(
+                                            name: "maskapai",
+                                            titleAttribute: "nama_maskapai",
+                                            modifyQueryUsing: fn(
+                                                Builder $query,
+                                            ) => $query->where("aktif", true),
+                                        )
+                                        ->required()
+                                        ->searchable()
+                                        ->preload()
+                                        ->label("Maskapai"),
+                                    Forms\Components\Select::make(
+                                        "tipe_penerbangan",
+                                    )
+                                        ->required()
+                                        ->options([
+                                            "keberangkatan" => "Keberangkatan",
+                                            "kepulangan" => "Kepulangan",
+                                        ])
+                                        ->default("keberangkatan")
+                                        ->label("Tipe Penerbangan"),
+                                    Forms\Components\TextInput::make(
+                                        "nomor_penerbangan",
+                                    )
+                                        ->maxLength(50)
+                                        ->label("No. Penerbangan"),
+                                    Forms\Components\TextInput::make(
+                                        "bandara_keberangkatan",
+                                    )
+                                        ->maxLength(100)
+                                        ->label("Bandara Berangkat"),
+                                    Forms\Components\TextInput::make(
+                                        "bandara_tujuan",
+                                    )
+                                        ->maxLength(100)
+                                        ->label("Bandara Tujuan"),
+                                    Forms\Components\DateTimePicker::make(
+                                        "waktu_berangkat",
+                                    )->label("Waktu Berangkat"),
+                                    Forms\Components\DateTimePicker::make(
+                                        "waktu_tiba",
+                                    )->label("Waktu Tiba"),
+                                ])
+                                ->columns(2)
+                                ->columnSpanFull()
+                                ->collapsible()
+                                ->label("Maskapai / Penerbangan")
+                                ->addActionLabel("Tambah Penerbangan")
+                                ->defaultItems(0),
+
+                            Forms\Components\Repeater::make("pembimbingDetails")
+                                ->relationship()
+                                ->schema([
+                                    Forms\Components\Select::make(
+                                        "pembimbing_id",
+                                    )
+                                        ->relationship(
+                                            name: "pembimbing",
+                                            titleAttribute: "nama_pembimbing",
+                                            modifyQueryUsing: fn(
+                                                Builder $query,
+                                            ) => $query->where("aktif", true),
+                                        )
+                                        ->required()
+                                        ->searchable()
+                                        ->preload()
+                                        ->disableOptionsWhenSelectedInSiblingRepeaterItems()
+                                        ->label("Pembimbing"),
+                                ])
+                                ->columnSpanFull()
+                                ->collapsible()
+                                ->label("Pembimbing Paket")
+                                ->addActionLabel("Tambah Pembimbing")
+                                ->defaultItems(0),
+
+                            Forms\Components\Repeater::make("perjalananDetails")
+                                ->relationship()
+                                ->schema([
+                                    Forms\Components\Select::make(
+                                        "perjalanan_id",
+                                    )
+                                        ->relationship(
+                                            name: "perjalanan",
+                                            titleAttribute: "lokasi_perjalanan",
+                                            modifyQueryUsing: fn(
+                                                Builder $query,
+                                            ) => $query->where("aktif", true),
+                                        )
+                                        ->required()
+                                        ->searchable()
+                                        ->preload()
+                                        ->label("Perjalanan"),
+                                    Forms\Components\DatePicker::make(
+                                        "tanggal",
+                                    )->label("Tanggal"),
+                                ])
+                                ->columns(2)
+                                ->columnSpanFull()
+                                ->collapsible()
+                                ->label("Rencana Perjalanan")
+                                ->addActionLabel("Tambah Perjalanan")
+                                ->defaultItems(0),
+                        ]),
+
+                    Forms\Components\Tabs\Tab::make("Status")
+                        ->icon("heroicon-o-flag")
                         ->schema([
                             Forms\Components\Toggle::make("is_featured")
                                 ->label("Featured (Tampilkan di Highlight)")
@@ -150,13 +322,6 @@ class PaketHajiResource extends Resource
                                 ->required()
                                 ->label("Aktif (Publish)")
                                 ->default(true),
-
-                            // TODO: Replace with master data selectors via paketDetails
-                            // - Fasilitas from fasilitas master (kategori: haji)
-                            // - Maskapai from maskapais master
-                            // - Hotel from hotels master
-                            // - Pembimbing from pembimbings master
-                            // - Perjalanan from perjalanans master
                         ]),
                 ])
                 ->columnSpanFull(),
@@ -166,7 +331,7 @@ class PaketHajiResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn($query) => $query->where('type', 'haji'))
+            ->modifyQueryUsing(fn($query) => $query->where("type", "haji"))
             ->columns([
                 Tables\Columns\ImageColumn::make("thumbnail")
                     ->label("Thumbnail")
