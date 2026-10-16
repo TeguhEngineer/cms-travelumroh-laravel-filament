@@ -21,7 +21,7 @@ class PaketResource extends Resource
 
     protected static ?string $navigationGroup = "Paket";
 
-    protected static ?int $navigationSort = 0;
+    protected static ?int $navigationSort = 10;
 
     public static function form(Form $form): Form
     {

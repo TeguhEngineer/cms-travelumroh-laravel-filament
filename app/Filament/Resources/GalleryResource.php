@@ -20,7 +20,7 @@ class GalleryResource extends Resource
 
     protected static ?string $navigationGroup = "Konten";
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 21;
 
     public static function form(Form $form): Form
     {

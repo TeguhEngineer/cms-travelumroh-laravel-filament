@@ -20,7 +20,7 @@ class VideoYoutubeResource extends Resource
 
     protected static ?string $navigationGroup = "Konten";
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 24;
 
     public static function form(Form $form): Form
     {

@@ -20,7 +20,7 @@ class PertanyaanResource extends Resource
 
     protected static ?string $navigationGroup = "Konten";
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 23;
 
     public static function form(Form $form): Form
     {
