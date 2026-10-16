@@ -14,62 +14,61 @@ class MaskapaiResource extends Resource
 {
     protected static ?string $model = Maskapai::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-paper-airplane';
+    protected static ?string $navigationIcon = "heroicon-o-paper-airplane";
 
-    protected static ?string $navigationLabel = 'Maskapai';
+    protected static ?string $navigationLabel = "Maskapai";
 
-    protected static ?string $navigationGroup = 'Data Master';
+    protected static ?string $navigationGroup = "Data Master";
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('nama_maskapai')
-                    ->required()
-                    ->maxLength(255)
-                    ->label('Nama Maskapai'),
+        return $form->schema([
+            Forms\Components\TextInput::make("nama_maskapai")
+                ->required()
+                ->maxLength(255)
+                ->label("Nama Maskapai"),
 
-                Forms\Components\Textarea::make('keterangan')
-                    ->maxLength(65535)
-                    ->columnSpanFull()
-                    ->label('Keterangan'),
+            Forms\Components\Textarea::make("keterangan")
+                ->maxLength(65535)
+                ->columnSpanFull()
+                ->label("Keterangan"),
 
-                Forms\Components\Toggle::make('aktif')
-                    ->required()
-                    ->default(true)
-                    ->label('Aktif'),
-            ]);
+            Forms\Components\Toggle::make("aktif")
+                ->required()
+                ->default(true)
+                ->label("Aktif"),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_maskapai')
+                Tables\Columns\TextColumn::make("nama_maskapai")
                     ->searchable()
-                    ->label('Nama Maskapai'),
+                    ->label("Nama Maskapai"),
 
-                Tables\Columns\TextColumn::make('keterangan')
+                Tables\Columns\TextColumn::make("keterangan")
                     ->limit(50)
-                    ->label('Keterangan'),
+                    ->label("Keterangan"),
 
-                Tables\Columns\IconColumn::make('aktif')
+                Tables\Columns\IconColumn::make("aktif")
                     ->boolean()
-                    ->label('Status'),
+                    ->label("Status"),
 
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make("created_at")
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('aktif')
-                    ->label('Status')
-                    ->placeholder('Semua')
-                    ->trueLabel('Aktif')
-                    ->falseLabel('Tidak Aktif'),
+                Tables\Filters\TernaryFilter::make("aktif")
+                    ->label("Status")
+                    ->placeholder("Semua")
+                    ->trueLabel("Aktif")
+                    ->falseLabel("Tidak Aktif"),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -80,7 +79,7 @@ class MaskapaiResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('created_at', 'desc');
+            ->defaultSort("created_at", "desc");
     }
 
     public static function getRelations(): array
@@ -91,9 +90,9 @@ class MaskapaiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMaskapais::route('/'),
-            'create' => Pages\CreateMaskapai::route('/create'),
-            'edit' => Pages\EditMaskapai::route('/{record}/edit'),
+            "index" => Pages\ListMaskapais::route("/"),
+            "create" => Pages\CreateMaskapai::route("/create"),
+            "edit" => Pages\EditMaskapai::route("/{record}/edit"),
         ];
     }
 }

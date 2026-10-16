@@ -14,77 +14,78 @@ class PembimbingResource extends Resource
 {
     protected static ?string $model = Pembimbing::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = "heroicon-o-user-group";
 
-    protected static ?string $navigationLabel = 'Pembimbing';
+    protected static ?string $navigationLabel = "Pembimbing";
 
-    protected static ?string $navigationGroup = 'Data Master';
+    protected static ?string $navigationGroup = "Data Master";
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('nama_pembimbing')
-                    ->required()
-                    ->maxLength(255)
-                    ->label('Nama Pembimbing'),
+        return $form->schema([
+            Forms\Components\TextInput::make("nama_pembimbing")
+                ->required()
+                ->maxLength(255)
+                ->label("Nama Pembimbing"),
 
-                Forms\Components\Select::make('kategori')
-                    ->required()
-                    ->options([
-                        'tour-leader' => 'Tour Leader',
-                        'muthawwif' => 'Muthawwif',
-                    ])
-                    ->label('Kategori'),
+            Forms\Components\Select::make("kategori")
+                ->required()
+                ->options([
+                    "tour-leader" => "Tour Leader",
+                    "muthawwif" => "Muthawwif",
+                ])
+                ->label("Kategori"),
 
-                Forms\Components\Toggle::make('aktif')
-                    ->required()
-                    ->default(true)
-                    ->label('Aktif'),
-            ]);
+            Forms\Components\Toggle::make("aktif")
+                ->required()
+                ->default(true)
+                ->label("Aktif"),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_pembimbing')
+                Tables\Columns\TextColumn::make("nama_pembimbing")
                     ->searchable()
-                    ->label('Nama Pembimbing'),
+                    ->label("Nama Pembimbing"),
 
-                Tables\Columns\TextColumn::make('kategori')
+                Tables\Columns\TextColumn::make("kategori")
                     ->badge()
-                    ->color(fn ($state) => match ($state) {
-                        'tour-leader' => 'success',
-                        'muthawwif' => 'info',
-                        default => 'gray',
-                    })
-                    ->label('Kategori'),
+                    ->color(
+                        fn($state) => match ($state) {
+                            "tour-leader" => "success",
+                            "muthawwif" => "info",
+                            default => "gray",
+                        },
+                    )
+                    ->label("Kategori"),
 
-                Tables\Columns\IconColumn::make('aktif')
+                Tables\Columns\IconColumn::make("aktif")
                     ->boolean()
-                    ->label('Status'),
+                    ->label("Status"),
 
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make("created_at")
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('aktif')
-                    ->label('Status')
-                    ->placeholder('Semua')
-                    ->trueLabel('Aktif')
-                    ->falseLabel('Tidak Aktif'),
+                Tables\Filters\TernaryFilter::make("aktif")
+                    ->label("Status")
+                    ->placeholder("Semua")
+                    ->trueLabel("Aktif")
+                    ->falseLabel("Tidak Aktif"),
 
-                Tables\Filters\SelectFilter::make('kategori')
+                Tables\Filters\SelectFilter::make("kategori")
                     ->options([
-                        'tour-leader' => 'Tour Leader',
-                        'muthawwif' => 'Muthawwif',
+                        "tour-leader" => "Tour Leader",
+                        "muthawwif" => "Muthawwif",
                     ])
-                    ->label('Kategori'),
+                    ->label("Kategori"),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -95,7 +96,7 @@ class PembimbingResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('created_at', 'desc');
+            ->defaultSort("created_at", "desc");
     }
 
     public static function getRelations(): array
@@ -106,9 +107,9 @@ class PembimbingResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPembimbings::route('/'),
-            'create' => Pages\CreatePembimbing::route('/create'),
-            'edit' => Pages\EditPembimbing::route('/{record}/edit'),
+            "index" => Pages\ListPembimbings::route("/"),
+            "create" => Pages\CreatePembimbing::route("/create"),
+            "edit" => Pages\EditPembimbing::route("/{record}/edit"),
         ];
     }
 }
