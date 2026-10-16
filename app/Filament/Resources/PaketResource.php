@@ -139,15 +139,6 @@ class PaketResource extends Resource
                                 ->minValue(0)
                                 ->default(45)
                                 ->label("Sisa Seat"),
-
-                            Forms\Components\TextInput::make("urutan")
-                                ->numeric()
-                                ->minValue(0)
-                                ->default(0)
-                                ->label("Urutan Tampil")
-                                ->helperText(
-                                    "Angka lebih kecil tampil lebih dulu",
-                                ),
                         ]),
 
                     Forms\Components\Tabs\Tab::make("Detail & Status")
@@ -166,55 +157,12 @@ class PaketResource extends Resource
                                 ->label("Aktif (Publish)")
                                 ->default(true),
 
-                            Forms\Components\Repeater::make("penerbangan")
-                                ->relationship("penerbangan")
-                                ->schema([
-                                    Forms\Components\Select::make("tipe")
-                                        ->required()
-                                        ->options([
-                                            "berangkat" => "Berangkat",
-                                            "pulang" => "Pulang",
-                                        ])
-                                        ->label("Tipe"),
-
-                                    Forms\Components\TextInput::make("maskapai")
-                                        ->required()
-                                        ->maxLength(100)
-                                        ->label("Maskapai"),
-
-                                    Forms\Components\TextInput::make("asal")
-                                        ->required()
-                                        ->maxLength(100)
-                                        ->label("Asal"),
-
-                                    Forms\Components\TextInput::make("tujuan")
-                                        ->required()
-                                        ->maxLength(100)
-                                        ->label("Tujuan"),
-
-                                    Forms\Components\DateTimePicker::make(
-                                        "waktu",
-                                    )->label("Waktu Keberangkatan"),
-                                ])
-                                ->columnSpanFull()
-                                ->collapsible()
-                                ->label("Jadwal Penerbangan")
-                                ->addActionLabel("Tambah Penerbangan")
-                                ->defaultItems(0),
-
-                            Forms\Components\Repeater::make("fasilitas")
-                                ->relationship("fasilitas")
-                                ->schema([
-                                    Forms\Components\TextInput::make("item")
-                                        ->required()
-                                        ->maxLength(255)
-                                        ->label("Nama Fasilitas"),
-                                ])
-                                ->columnSpanFull()
-                                ->simple()
-                                ->label("Fasilitas Paket")
-                                ->addActionLabel("Tambah Fasilitas")
-                                ->defaultItems(0),
+                            // TODO: Replace with master data selectors via paketDetails
+                            // - Fasilitas from fasilitas master
+                            // - Maskapai from maskapais master
+                            // - Hotel from hotels master
+                            // - Pembimbing from pembimbings master
+                            // - Perjalanan from perjalanans master
                         ]),
                 ])
                 ->columnSpanFull(),
@@ -269,12 +217,6 @@ class PaketResource extends Resource
                     ->boolean()
                     ->label("Status"),
 
-                Tables\Columns\TextColumn::make("urutan")
-                    ->numeric()
-                    ->sortable()
-                    ->toggleable()
-                    ->label("Urutan"),
-
                 Tables\Columns\TextColumn::make("created_at")
                     ->dateTime()
                     ->sortable()
@@ -309,7 +251,7 @@ class PaketResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort("urutan", "asc");
+            ->defaultSort("created_at", "desc");
     }
 
     public static function getRelations(): array

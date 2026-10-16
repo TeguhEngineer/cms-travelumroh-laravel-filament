@@ -35,7 +35,7 @@ class PaketController extends Controller
 
         // Eager load relations if requested: ?with_relations=1
         if ($request->input("with_relations")) {
-            $query->with(["penerbangan", "fasilitas"]);
+            $query->with(["paketDetails"]);
         }
 
         // Pagination: ?per_page=25&page=2
@@ -53,7 +53,7 @@ class PaketController extends Controller
         $query = Paket::where("slug", $slug);
 
         // Auto-populate relations for detail page
-        $query->with(["penerbangan", "fasilitas"]);
+        $query->with(["paketDetails"]);
 
         $paket = $query->firstOrFail();
 

@@ -1,0 +1,24 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void
+    {
+        Schema::create("pembimbings", function (Blueprint $table) {
+            $table->id();
+            $table->string("documentId")->unique();
+            $table->string("nama_pembimbing");
+            $table->enum("kategori", ["tour-leader", "muthawwif"]);
+            $table->boolean("aktif")->default(true);
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists("pembimbings");
+    }
+};

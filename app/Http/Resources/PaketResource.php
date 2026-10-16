@@ -34,12 +34,8 @@ class PaketResource extends JsonResource
             "isFeatured" => $this->is_featured,
             "isPromo" => $this->is_promo,
             "aktif" => $this->aktif,
-            "penerbangan" => PenerbanganResource::collection(
-                $this->whenLoaded("penerbangan"),
-            ),
-            "fasilitas" => FasilitasResource::collection(
-                $this->whenLoaded("fasilitas"),
-            ),
+            // Master data will be loaded via paketDetails relation
+            // Temporarily removed old penerbangan & fasilitas structure
             "createdAt" => $this->created_at?->toISOString(),
             "updatedAt" => $this->updated_at?->toISOString(),
             "publishedAt" => $this->published_at?->toISOString(),
