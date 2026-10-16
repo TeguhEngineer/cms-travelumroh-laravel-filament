@@ -23,6 +23,10 @@ class PaketResource extends JsonResource
             "discountPrice" => $this->discount_price
                 ? (float) $this->discount_price
                 : null,
+            "discountPercent" =>
+                $this->discount_percent !== null
+                    ? (float) $this->discount_percent
+                    : null,
             "tanggalBerangkat" => $this->tanggal_berangkat?->format("Y-m-d"),
             "tanggalPulang" => $this->tanggal_pulang?->format("Y-m-d"),
             "durasiHari" => $this->durasi_hari,

@@ -15,6 +15,7 @@ class Paket extends Model
         "description",
         "price",
         "discount_price",
+        "discount_percent",
         "tanggal_berangkat",
         "tanggal_pulang",
         "durasi_hari",
@@ -32,6 +33,7 @@ class Paket extends Model
     protected $casts = [
         "price" => "decimal:2",
         "discount_price" => "decimal:2",
+        "discount_percent" => "decimal:2",
         "tanggal_berangkat" => "date",
         "tanggal_pulang" => "date",
         "is_featured" => "boolean",

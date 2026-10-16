@@ -97,13 +97,86 @@ class PaketHajiResource extends Resource
                                 ->required()
                                 ->numeric()
                                 ->prefix("Rp")
-                                ->label("Harga Normal"),
+                                ->label("Harga Normal")
+                                ->live()
+                                ->afterStateUpdated(function (
+                                    $state,
+                                    Forms\Get $get,
+                                    Forms\Set $set,
+                                ) {
+                                    $percent = $get("discount_percent");
+                                    if (
+                                        filled($percent) &&
+                                        filled($state) &&
+                                        is_numeric($state) &&
+                                        is_numeric($percent)
+                                    ) {
+                                        $percent = min(
+                                            max((float) $percent, 0),
+                                            100,
+                                        );
+                                        $set(
+                                            "discount_price",
+                                            round(
+                                                (float) $state *
+                                                    (1 - $percent / 100),
+                                            ),
+                                        );
+                                    }
+                                }),
+
+                            Forms\Components\TextInput::make("discount_percent")
+                                ->numeric()
+                                ->minValue(0)
+                                ->maxValue(100)
+                                ->suffix("%")
+                                ->label("Diskon (%)")
+                                ->helperText(
+                                    "Isi persen untuk hitung harga diskon otomatis",
+                                )
+                                ->live()
+                                ->afterStateUpdated(function (
+                                    $state,
+                                    Forms\Get $get,
+                                    Forms\Set $set,
+                                ) {
+                                    if (!filled($state)) {
+                                        $set("discount_price", null);
+                                        return;
+                                    }
+                                    $price = $get("price");
+                                    if (
+                                        filled($price) &&
+                                        is_numeric($price) &&
+                                        is_numeric($state)
+                                    ) {
+                                        $percent = min(
+                                            max((float) $state, 0),
+                                            100,
+                                        );
+                                        $set(
+                                            "discount_price",
+                                            round(
+                                                (float) $price *
+                                                    (1 - $percent / 100),
+                                            ),
+                                        );
+                                    }
+                                }),
 
                             Forms\Components\TextInput::make("discount_price")
                                 ->numeric()
                                 ->prefix("Rp")
                                 ->label("Harga Diskon")
-                                ->helperText("Kosongkan jika tidak ada diskon"),
+                                ->helperText(
+                                    "Otomatis dari persen diskon, atau isi manual jika persen kosong",
+                                )
+                                ->disabled(
+                                    fn(Forms\Get $get) => filled(
+                                        $get("discount_percent"),
+                                    ),
+                                )
+                                ->dehydrated(),
 
                             Forms\Components\DatePicker::make(
                                 "tanggal_berangkat",
