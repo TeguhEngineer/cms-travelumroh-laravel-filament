@@ -33,6 +33,16 @@ class FasilitasResource extends Resource
                 ->maxLength(255)
                 ->label("Nama Fasilitas"),
 
+            Forms\Components\Select::make("kategori")
+                ->required()
+                ->options([
+                    "umroh" => "Umroh",
+                    "haji" => "Haji",
+                    "umum" => "Umum",
+                ])
+                ->default("umum")
+                ->label("Kategori Paket"),
+
             Forms\Components\Toggle::make("aktif")
                 ->required()
                 ->default(true)
@@ -47,6 +57,26 @@ class FasilitasResource extends Resource
                 Tables\Columns\TextColumn::make("nama_fasilitas")
                     ->searchable()
                     ->label("Nama Fasilitas"),
+
+                Tables\Columns\TextColumn::make("kategori")
+                    ->badge()
+                    ->color(
+                        fn($state) => match ($state) {
+                            "umroh" => "success",
+                            "haji" => "warning",
+                            "umum" => "info",
+                            default => "gray",
+                        },
+                    )
+                    ->formatStateUsing(
+                        fn($state) => match ($state) {
+                            "umroh" => "Umroh",
+                            "haji" => "Haji",
+                            "umum" => "Umum",
+                            default => $state,
+                        },
+                    )
+                    ->label("Kategori"),
 
                 Tables\Columns\IconColumn::make("aktif")
                     ->boolean()

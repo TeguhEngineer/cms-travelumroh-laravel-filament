@@ -7,10 +7,11 @@ use Illuminate\Support\Str;
 
 class Fasilitas extends Model
 {
-    protected $fillable = ["documentId", "nama_fasilitas", "aktif"];
+    protected $fillable = ["documentId", "nama_fasilitas", "kategori", "aktif"];
 
     protected $casts = [
         "aktif" => "boolean",
+        "kategori" => "string",
     ];
 
     protected static function boot()
