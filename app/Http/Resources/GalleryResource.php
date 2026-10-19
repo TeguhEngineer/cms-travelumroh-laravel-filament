@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Support\FileUrl;
 
 class GalleryResource extends JsonResource
 {
@@ -14,7 +15,7 @@ class GalleryResource extends JsonResource
             "documentId" => $this->documentId,
             "judul" => $this->judul,
             "deskripsi" => $this->deskripsi,
-            "urlFoto" => $this->url_foto,
+            "urlFoto" => FileUrl::from($this->url_foto),
             "lokasi" => $this->lokasi,
             "aktif" => $this->aktif,
             "createdAt" => $this->created_at?->toISOString(),

@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Support\FileUrl;
 
 class PaketResource extends JsonResource
 {
@@ -34,7 +35,7 @@ class PaketResource extends JsonResource
             "sisaSeat" => $this->sisa_seat,
             "kotaKeberangkatan" => $this->kota_keberangkatan,
             "hotelRating" => $this->hotel_rating,
-            "thumbnail" => $this->thumbnail,
+            "thumbnail" => FileUrl::from($this->thumbnail),
             "isFeatured" => $this->is_featured,
             "isPromo" => $this->is_promo,
             "aktif" => $this->aktif,

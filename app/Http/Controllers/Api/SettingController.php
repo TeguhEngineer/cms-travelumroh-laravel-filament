@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use App\Support\FileUrl;
 
 class SettingController extends Controller
 {
@@ -34,7 +35,7 @@ class SettingController extends Controller
                 "company" => [
                     "name" => $settings->company_name,
                     "description" => $settings->company_description,
-                    "logoUrl" => $this->fileUrl($settings->company_logo),
+                    "logoUrl" => FileUrl::from($settings->company_logo),
                     "nomorSkUmroh" => $settings->nomor_sk_umroh,
                     "nomorSkHaji" => $settings->nomor_sk_haji,
                 ],
@@ -61,7 +62,7 @@ class SettingController extends Controller
                     "keywords" => $settings->seo_keywords,
                 ],
                 "cover" => [
-                    "imageUrl" => $this->fileUrl($settings->cover_image),
+                    "imageUrl" => FileUrl::from($settings->cover_image),
                     "title" => $settings->cover_title,
                     "subtitle" => $settings->cover_subtitle,
                 ],
@@ -73,22 +74,5 @@ class SettingController extends Controller
             ],
             "meta" => [],
         ]);
-    }
-
-    /**
-     * Convert a stored public-disk path into a full URL.
-     */
-    private function fileUrl(?string $path): ?string
-    {
-        if (blank($path)) {
-            return null;
-        }
-
-        // Already an absolute URL
-        if (str_starts_with($path, "http")) {
-            return $path;
-        }
-
-        return asset("storage/" . ltrim($path, "/"));
     }
 }

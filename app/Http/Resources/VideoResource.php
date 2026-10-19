@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Support\FileUrl;
 
 class VideoResource extends JsonResource
 {
@@ -14,7 +15,7 @@ class VideoResource extends JsonResource
             "documentId" => $this->documentId,
             "judul" => $this->judul,
             "urlYoutube" => $this->url_youtube,
-            "thumbnail" => $this->thumbnail,
+            "thumbnail" => FileUrl::from($this->thumbnail),
             "deskripsi" => $this->deskripsi,
             "aktif" => $this->aktif,
             "createdAt" => $this->created_at?->toISOString(),

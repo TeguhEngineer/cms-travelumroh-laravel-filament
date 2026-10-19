@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Support\FileUrl;
 
 class TestimoniResource extends JsonResource
 {
@@ -13,7 +14,7 @@ class TestimoniResource extends JsonResource
             "id" => $this->id,
             "documentId" => $this->documentId,
             "nama" => $this->nama,
-            "foto" => $this->foto,
+            "foto" => FileUrl::from($this->foto),
             "isiTestimoni" => $this->isi_testimoni,
             "rating" => $this->rating,
             "paketDiikuti" => $this->paket_diikuti,
