@@ -38,8 +38,77 @@ class PaketResource extends JsonResource
             "isFeatured" => $this->is_featured,
             "isPromo" => $this->is_promo,
             "aktif" => $this->aktif,
-            // Master data will be loaded via paketDetails relation
-            // Temporarily removed old penerbangan & fasilitas structure
+
+            // Detail relations (loaded when ?with_relations=1 or show)
+            "fasilitas" => $this->whenLoaded(
+                "fasilitasDetails",
+                fn() => $this->fasilitasDetails->map(
+                    fn($detail) => [
+                        "id" => $detail->fasilitas->id,
+                        "namaFasilitas" => $detail->fasilitas->nama_fasilitas,
+                        "kategori" => $detail->fasilitas->kategori,
+                    ],
+                ),
+            ),
+
+            "hotels" => $this->whenLoaded(
+                "hotelDetails",
+                fn() => $this->hotelDetails->map(
+                    fn($detail) => [
+                        "id" => $detail->hotel->id,
+                        "namaHotel" => $detail->hotel->nama_hotel,
+                        "lokasi" => $detail->hotel->lokasi,
+                        "rating" => $detail->hotel->rating,
+                        "deskripsi" => $detail->hotel->deskripsi_hotel,
+                        "checkin" => $detail->checkin?->format("Y-m-d"),
+                        "checkout" => $detail->checkout?->format("Y-m-d"),
+                    ],
+                ),
+            ),
+
+            "maskapais" => $this->whenLoaded(
+                "maskapaiDetails",
+                fn() => $this->maskapaiDetails->map(
+                    fn($detail) => [
+                        "id" => $detail->maskapai->id,
+                        "namaMaskapai" => $detail->maskapai->nama_maskapai,
+                        "keterangan" => $detail->maskapai->keterangan,
+                        "nomorPenerbangan" => $detail->nomor_penerbangan,
+                        "bandaraKeberangkatan" =>
+                            $detail->bandara_keberangkatan,
+                        "bandaraTujuan" => $detail->bandara_tujuan,
+                        "waktuBerangkat" => $detail->waktu_berangkat?->toISOString(),
+                        "waktuTiba" => $detail->waktu_tiba?->toISOString(),
+                        "tipePenerbangan" => $detail->tipe_penerbangan,
+                    ],
+                ),
+            ),
+
+            "pembimbings" => $this->whenLoaded(
+                "pembimbingDetails",
+                fn() => $this->pembimbingDetails->map(
+                    fn($detail) => [
+                        "id" => $detail->pembimbing->id,
+                        "namaPembimbing" =>
+                            $detail->pembimbing->nama_pembimbing,
+                        "kategori" => $detail->pembimbing->kategori,
+                    ],
+                ),
+            ),
+
+            "perjalanans" => $this->whenLoaded(
+                "perjalananDetails",
+                fn() => $this->perjalananDetails->map(
+                    fn($detail) => [
+                        "id" => $detail->perjalanan->id,
+                        "lokasiPerjalanan" =>
+                            $detail->perjalanan->lokasi_perjalanan,
+                        "deskripsi" => $detail->perjalanan->deskripsi,
+                        "tanggal" => $detail->tanggal?->format("Y-m-d"),
+                    ],
+                ),
+            ),
+
             "createdAt" => $this->created_at?->toISOString(),
             "updatedAt" => $this->updated_at?->toISOString(),
             "publishedAt" => $this->published_at?->toISOString(),

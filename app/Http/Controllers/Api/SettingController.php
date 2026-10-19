@@ -15,60 +15,80 @@ class SettingController extends Controller
         $settings = Setting::first();
 
         if (!$settings) {
-            return response()->json([
-                'error' => [
-                    'status' => 404,
-                    'name' => 'NotFoundError',
-                    'message' => 'Settings not configured'
-                ]
-            ], 404);
+            return response()->json(
+                [
+                    "error" => [
+                        "status" => 404,
+                        "name" => "NotFoundError",
+                        "message" => "Settings not configured",
+                    ],
+                ],
+                404,
+            );
         }
 
         return response()->json([
-            'data' => [
-                'id' => $settings->id,
-                'documentId' => 'settings_main',
-                'company' => [
-                    'name' => $settings->company_name,
-                    'description' => $settings->company_description,
-                    'logoUrl' => $settings->company_logo,
-                    'nomorSkUmroh' => $settings->nomor_sk_umroh,
-                    'nomorSkHaji' => $settings->nomor_sk_haji,
+            "data" => [
+                "id" => $settings->id,
+                "documentId" => "settings_main",
+                "company" => [
+                    "name" => $settings->company_name,
+                    "description" => $settings->company_description,
+                    "logoUrl" => $this->fileUrl($settings->company_logo),
+                    "nomorSkUmroh" => $settings->nomor_sk_umroh,
+                    "nomorSkHaji" => $settings->nomor_sk_haji,
                 ],
-                'contact' => [
-                    'telepon1' => $settings->telepon_1,
-                    'telepon2' => $settings->telepon_2,
-                    'telepon3' => $settings->telepon_3,
-                    'telepon4' => $settings->telepon_4,
-                    'telepon5' => $settings->telepon_5,
-                    'email' => $settings->email,
-                    'alamat' => $settings->alamat,
-                    'detailAlamat' => $settings->detail_alamat,
+                "contact" => [
+                    "telepon1" => $settings->telepon_1,
+                    "telepon2" => $settings->telepon_2,
+                    "telepon3" => $settings->telepon_3,
+                    "telepon4" => $settings->telepon_4,
+                    "telepon5" => $settings->telepon_5,
+                    "email" => $settings->email,
+                    "alamat" => $settings->alamat,
+                    "detailAlamat" => $settings->detail_alamat,
                 ],
-                'socialMedia' => [
-                    'whatsapp' => $settings->whatsapp,
-                    'facebook' => $settings->facebook,
-                    'instagram' => $settings->instagram,
-                    'youtube' => $settings->youtube,
-                    'tiktok' => $settings->tiktok,
+                "socialMedia" => [
+                    "whatsapp" => $settings->whatsapp,
+                    "facebook" => $settings->facebook,
+                    "instagram" => $settings->instagram,
+                    "youtube" => $settings->youtube,
+                    "tiktok" => $settings->tiktok,
                 ],
-                'seo' => [
-                    'title' => $settings->seo_title,
-                    'description' => $settings->seo_description,
-                    'keywords' => $settings->seo_keywords,
+                "seo" => [
+                    "title" => $settings->seo_title,
+                    "description" => $settings->seo_description,
+                    "keywords" => $settings->seo_keywords,
                 ],
-                'cover' => [
-                    'imageUrl' => $settings->cover_image,
-                    'title' => $settings->cover_title,
-                    'subtitle' => $settings->cover_subtitle,
+                "cover" => [
+                    "imageUrl" => $this->fileUrl($settings->cover_image),
+                    "title" => $settings->cover_title,
+                    "subtitle" => $settings->cover_subtitle,
                 ],
-                'tentangKami' => [
-                    'deskripsiPerusahaan' => $settings->deskripsi_perusahaan,
-                    'visi' => $settings->visi,
-                    'misi' => $settings->misi,
+                "tentangKami" => [
+                    "deskripsiPerusahaan" => $settings->deskripsi_perusahaan,
+                    "visi" => $settings->visi,
+                    "misi" => $settings->misi,
                 ],
             ],
-            'meta' => []
+            "meta" => [],
         ]);
+    }
+
+    /**
+     * Convert a stored public-disk path into a full URL.
+     */
+    private function fileUrl(?string $path): ?string
+    {
+        if (blank($path)) {
+            return null;
+        }
+
+        // Already an absolute URL
+        if (str_starts_with($path, "http")) {
+            return $path;
+        }
+
+        return asset("storage/" . ltrim($path, "/"));
     }
 }

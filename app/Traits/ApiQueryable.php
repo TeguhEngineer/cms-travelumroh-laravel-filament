@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 trait ApiQueryable
 {
@@ -12,8 +13,11 @@ trait ApiQueryable
      *
      * Usage: ?active=1&category=umroh
      */
-    protected function applyFilters(Builder $query, Request $request, array $allowedFilters = []): void
-    {
+    protected function applyFilters(
+        Builder $query,
+        Request $request,
+        array $allowedFilters = [],
+    ): void {
         if (empty($allowedFilters)) {
             return;
         }
@@ -23,9 +27,9 @@ trait ApiQueryable
                 $value = $request->input($filter);
 
                 // Handle boolean values
-                if ($value === 'true' || $value === '1') {
+                if ($value === "true" || $value === "1") {
                     $value = true;
-                } elseif ($value === 'false' || $value === '0') {
+                } elseif ($value === "false" || $value === "0") {
                     $value = false;
                 }
 
@@ -39,16 +43,25 @@ trait ApiQueryable
      *
      * Usage: ?sort=-created_at (descending) or ?sort=created_at (ascending)
      */
-    protected function applySorting(Builder $query, Request $request, string $defaultSort = 'created_at'): void
-    {
-        $sort = $request->input('sort', $defaultSort);
+    protected function applySorting(
+        Builder $query,
+        Request $request,
+        string $defaultSort = "created_at",
+    ): void {
+        $sort = $request->input("sort", $defaultSort);
 
-        if (str_starts_with($sort, '-')) {
+        if (str_starts_with($sort, "-")) {
             $field = substr($sort, 1);
-            $direction = 'desc';
+            $direction = "desc";
         } else {
             $field = $sort;
-            $direction = 'asc';
+            $direction = "asc";
+        }
+
+        // Guard against sorting by a column that does not exist
+        if (!Schema::hasColumn($query->getModel()->getTable(), $field)) {
+            $field = ltrim($defaultSort, "-");
+            $direction = str_starts_with($defaultSort, "-") ? "desc" : "asc";
         }
 
         $query->orderBy($field, $direction);
@@ -60,8 +73,8 @@ trait ApiQueryable
     protected function getPaginationParams(Request $request): array
     {
         return [
-            'per_page' => min((int) $request->input('per_page', 25), 100),
-            'page' => (int) $request->input('page', 1),
+            "per_page" => min((int) $request->input("per_page", 25), 100),
+            "page" => (int) $request->input("page", 1),
         ];
     }
 }
