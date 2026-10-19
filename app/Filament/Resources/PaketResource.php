@@ -95,6 +95,15 @@ class PaketResource extends Resource
                                 ->minValue(1)
                                 ->maxValue(5)
                                 ->label("Rating Hotel (1-5)"),
+
+                            Forms\Components\Select::make("tipe_kamar")
+                                ->options([
+                                    "quad" => "Quad",
+                                    "triple" => "Triple",
+                                    "double" => "Double",
+                                ])
+                                ->placeholder("Kosong")
+                                ->label("Tipe Kamar"),
                         ]),
 
                     Forms\Components\Tabs\Tab::make("Harga & Jadwal")
@@ -206,6 +215,11 @@ class PaketResource extends Resource
                     ->date()
                     ->sortable()
                     ->label("Tgl Berangkat"),
+
+                Tables\Columns\TextColumn::make("tipe_kamar")
+                    ->placeholder("-")
+                    ->toggleable()
+                    ->label("Tipe Kamar"),
 
                 Tables\Columns\TextColumn::make("sisa_seat")
                     ->numeric()

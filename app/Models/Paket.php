@@ -23,6 +23,7 @@ class Paket extends Model
         "sisa_seat",
         "kota_keberangkatan",
         "hotel_rating",
+        "tipe_kamar",
         "thumbnail",
         "is_featured",
         "is_promo",

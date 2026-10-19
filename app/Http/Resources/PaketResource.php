@@ -35,6 +35,7 @@ class PaketResource extends JsonResource
             "sisaSeat" => $this->sisa_seat,
             "kotaKeberangkatan" => $this->kota_keberangkatan,
             "hotelRating" => $this->hotel_rating,
+            "tipeKamar" => $this->tipe_kamar,
             "thumbnail" => FileUrl::from($this->thumbnail),
             "isFeatured" => $this->is_featured,
             "isPromo" => $this->is_promo,
