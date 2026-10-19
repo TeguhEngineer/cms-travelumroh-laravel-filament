@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\Fasilitas;
 use App\Support\FileUrl;
 
 class PaketResource extends JsonResource
@@ -51,6 +52,11 @@ class PaketResource extends JsonResource
                         "kategori" => $detail->fasilitas->kategori,
                     ],
                 ),
+            ),
+
+            "fasilitasTidakTermasuk" => $this->when(
+                $request->route("slug") !== null,
+                fn() => $this->fasilitasTidakTermasuk(),
             ),
 
             "hotels" => $this->whenLoaded(
@@ -115,5 +121,40 @@ class PaketResource extends JsonResource
             "updatedAt" => $this->updated_at?->toISOString(),
             "publishedAt" => $this->published_at?->toISOString(),
         ];
+    }
+
+    /**
+     * Master fasilitas for this package type that are not attached to the
+     * package (category "umum" plus "umroh"/"haji" matching its type).
+     */
+    protected function fasilitasTidakTermasuk(): array
+    {
+        if (!$this->relationLoaded("fasilitasDetails")) {
+            return [];
+        }
+
+        $selectedIds = $this->fasilitasDetails
+            ->pluck("fasilitas_id")
+            ->filter()
+            ->all();
+
+        $kategori =
+            $this->type === "haji" ? ["umum", "haji"] : ["umum", "umroh"];
+
+        return Fasilitas::query()
+            ->where("aktif", true)
+            ->whereIn("kategori", $kategori)
+            ->whereNotIn("id", $selectedIds)
+            ->orderBy("nama_fasilitas")
+            ->get()
+            ->map(
+                fn(Fasilitas $fasilitas) => [
+                    "id" => $fasilitas->id,
+                    "namaFasilitas" => $fasilitas->nama_fasilitas,
+                    "kategori" => $fasilitas->kategori,
+                ],
+            )
+            ->values()
+            ->all();
     }
 }
