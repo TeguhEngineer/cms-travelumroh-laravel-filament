@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             MasterDataSeeder::class,
             PaketSeeder::class,
             KontenSeeder::class,
+            TrustBarSeeder::class,
         ]);
     }
 }

@@ -176,26 +176,6 @@ class Settings extends Page
                                     ->url()
                                     ->maxLength(255),
                             ]),
-
-                        Forms\Components\Tabs\Tab::make("SEO")
-                            ->icon("heroicon-o-magnifying-glass")
-                            ->schema([
-                                Forms\Components\TextInput::make("seo_title")
-                                    ->label("SEO Title")
-                                    ->maxLength(255),
-
-                                Forms\Components\Textarea::make(
-                                    "seo_description",
-                                )
-                                    ->label("SEO Description")
-                                    ->rows(3)
-                                    ->maxLength(500),
-
-                                Forms\Components\Textarea::make("seo_keywords")
-                                    ->label("SEO Keywords")
-                                    ->rows(2)
-                                    ->helperText("Pisahkan dengan koma"),
-                            ]),
                     ])
                     ->columnSpanFull(),
             ])

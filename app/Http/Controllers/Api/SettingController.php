@@ -56,11 +56,6 @@ class SettingController extends Controller
                     "youtube" => $settings->youtube,
                     "tiktok" => $settings->tiktok,
                 ],
-                "seo" => [
-                    "title" => $settings->seo_title,
-                    "description" => $settings->seo_description,
-                    "keywords" => $settings->seo_keywords,
-                ],
                 "cover" => [
                     "imageUrl" => FileUrl::from($settings->cover_image),
                     "title" => $settings->cover_title,
