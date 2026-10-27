@@ -1,0 +1,108 @@
+########################################################################
+# Asella CMS — contoh Nginx server block
+#
+# Pasang di: /etc/nginx/sites-available/asella-cms
+# Aktifkan:  ln -s /etc/nginx/sites-available/asella-cms \
+#                   /etc/nginx/sites-enabled/asella-cms
+#
+# Ganti:
+#   cms.example.com   -> domain / subdomain CMS Anda
+#   /var/www/asella-cms -> lokasi project di server
+#   php8.3-fpm.sock   -> versi PHP-FPM yang terpasang
+#
+# HTTPS WAJIB: frontend Netlify berjalan di https, jadi API di http akan
+# diblokir browser sebagai mixed content.
+########################################################################
+
+# ---------------------------------------------------------------------
+# Redirect semua HTTP ke HTTPS
+# ---------------------------------------------------------------------
+server {
+    listen 80;
+    listen [::]:80;
+    server_name cms.example.com;
+
+    # Biarkan Certbot mengakses challenge sebelum redirect.
+    location /.well-known/acme-challenge/ {
+        root /var/www/asella-cms/public;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+# ---------------------------------------------------------------------
+# Server utama
+# ---------------------------------------------------------------------
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name cms.example.com;
+
+    root /var/www/asella-cms/public;
+    index index.php;
+
+    charset utf-8;
+
+    # Sertifikat dari Certbot (isi setelah menjalankan certbot).
+    ssl_certificate     /etc/letsencrypt/live/cms.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/cms.example.com/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers off;
+
+    # Filament mengunggah gambar paket/galeri/testimoni.
+    client_max_body_size 20M;
+
+    access_log /var/log/nginx/asella-cms.access.log;
+    error_log  /var/log/nginx/asella-cms.error.log;
+
+    # -----------------------------------------------------------------
+    # Security headers
+    # -----------------------------------------------------------------
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+
+    # -----------------------------------------------------------------
+    # Laravel front controller
+    # -----------------------------------------------------------------
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+
+        # Beri tahu PHP bahwa request masuk lewat HTTPS. Tanpa baris ini
+        # Laravel mengira request masih http dan menghasilkan URL asset
+        # http:// yang diblokir browser di halaman https.
+        fastcgi_param HTTPS $https if_not_empty;
+
+        fastcgi_hide_header X-Powered-By;
+    }
+
+    # Blokir akses ke file tersembunyi (.env, .git, dll).
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+
+    # -----------------------------------------------------------------
+    # Cache aset statis (opsional)
+    # -----------------------------------------------------------------
+    location ~* \.(?:css|js|jpg|jpeg|png|gif|webp|svg|woff2?)$ {
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+        access_log off;
+        try_files $uri =404;
+    }
+}
