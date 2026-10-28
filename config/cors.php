@@ -21,9 +21,9 @@ return [
     | Cross-Origin Resource Sharing (CORS) Configuration
     |--------------------------------------------------------------------------
     |
-    | The public API is consumed by the Netlify-hosted frontend, so the browser
-    | origin must be explicitly allowed. Override CORS_ALLOWED_ORIGINS in .env
-    | (comma separated) without touching this file, e.g.
+    | The public API is consumed by the Netlify/Vercel-hosted frontend, so the
+    | browser origin must be explicitly allowed. Override CORS_ALLOWED_ORIGINS
+    | in .env (comma separated) without touching this file, e.g.
     |
     |   CORS_ALLOWED_ORIGINS="https://travelumroh-v1.netlify.app,https://asellatravel.id"
     |
@@ -36,8 +36,10 @@ return [
     "allowed_origins" => $allowedOrigins,
 
     "allowed_origins_patterns" => [
-        // Netlify branch & deploy preview URLs for this site
+        // Netlify branch & deploy preview URLs
         "#^https://([a-z0-9-]+--)?travelumroh-v1\.netlify\.app$#",
+        // Vercel preview & production URLs
+        "#^https://([a-z0-9-]+-)?(lp-v1|travelumroh|travelhajiumroh-lp|asella)\.vercel\.app$#",
     ],
 
     "allowed_headers" => ["*"],
