@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Models\Paket;
+use App\Models\Hotel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -312,6 +313,7 @@ class PaketUmrohResource extends Resource
                                             ) => $query->where("aktif", true),
                                         )
                                         ->required()
+                                        ->live()
                                         ->searchable()
                                         ->preload()
                                         ->label("Hotel"),
@@ -325,6 +327,15 @@ class PaketUmrohResource extends Resource
                                 ->columns(3)
                                 ->columnSpanFull()
                                 ->collapsible()
+                                ->itemLabel(function (array $state): ?string {
+                                    $hotel = Hotel::find(
+                                        $state["hotel_id"] ?? null,
+                                    );
+
+                                    return $hotel
+                                        ? "{$hotel->nama_hotel} — {$hotel->lokasi}"
+                                        : null;
+                                })
                                 ->label("Hotel Paket")
                                 ->addActionLabel("Tambah Hotel")
                                 ->defaultItems(0),
