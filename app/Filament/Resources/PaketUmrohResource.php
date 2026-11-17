@@ -104,6 +104,27 @@ class PaketUmrohResource extends Resource
                         ->schema([
                             Forms\Components\TextInput::make("price")
                                 ->required()
+                                ->type("text")
+                                ->inputMode("numeric")
+                                ->extraInputAttributes([
+                                    "x-on:input" =>
+                                        '$event.target.value = $event.target.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".")',
+                                ])
+                                ->stripCharacters(".")
+                                ->formatStateUsing(
+                                    fn($state) => filled($state)
+                                        ? number_format(
+                                            (float) str_replace(
+                                                ".",
+                                                "",
+                                                (string) $state,
+                                            ),
+                                            0,
+                                            ",",
+                                            ".",
+                                        )
+                                        : null,
+                                )
                                 ->numeric()
                                 ->prefix("Rp")
                                 ->label("Harga Normal")
@@ -113,11 +134,16 @@ class PaketUmrohResource extends Resource
                                     Forms\Get $get,
                                     Forms\Set $set,
                                 ) {
+                                    $price = str_replace(
+                                        ".",
+                                        "",
+                                        (string) $state,
+                                    );
                                     $percent = $get("discount_percent");
                                     if (
                                         filled($percent) &&
-                                        filled($state) &&
-                                        is_numeric($state) &&
+                                        filled($price) &&
+                                        is_numeric($price) &&
                                         is_numeric($percent)
                                     ) {
                                         $percent = min(
@@ -126,9 +152,14 @@ class PaketUmrohResource extends Resource
                                         );
                                         $set(
                                             "discount_price",
-                                            round(
-                                                (float) $state *
-                                                    (1 - $percent / 100),
+                                            number_format(
+                                                round(
+                                                    (float) $price *
+                                                        (1 - $percent / 100),
+                                                ),
+                                                0,
+                                                ",",
+                                                ".",
                                             ),
                                         );
                                     }
@@ -153,7 +184,11 @@ class PaketUmrohResource extends Resource
                                         $set("discount_price", null);
                                         return;
                                     }
-                                    $price = $get("price");
+                                    $price = str_replace(
+                                        ".",
+                                        "",
+                                        (string) $get("price"),
+                                    );
                                     if (
                                         filled($price) &&
                                         is_numeric($price) &&
@@ -165,15 +200,41 @@ class PaketUmrohResource extends Resource
                                         );
                                         $set(
                                             "discount_price",
-                                            round(
-                                                (float) $price *
-                                                    (1 - $percent / 100),
+                                            number_format(
+                                                round(
+                                                    (float) $price *
+                                                        (1 - $percent / 100),
+                                                ),
+                                                0,
+                                                ",",
+                                                ".",
                                             ),
                                         );
                                     }
                                 }),
 
                             Forms\Components\TextInput::make("discount_price")
+                                ->type("text")
+                                ->inputMode("numeric")
+                                ->extraInputAttributes([
+                                    "x-on:input" =>
+                                        '$event.target.value = $event.target.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".")',
+                                ])
+                                ->stripCharacters(".")
+                                ->formatStateUsing(
+                                    fn($state) => filled($state)
+                                        ? number_format(
+                                            (float) str_replace(
+                                                ".",
+                                                "",
+                                                (string) $state,
+                                            ),
+                                            0,
+                                            ",",
+                                            ".",
+                                        )
+                                        : null,
+                                )
                                 ->numeric()
                                 ->prefix("Rp")
                                 ->label("Harga Diskon")
@@ -190,11 +251,11 @@ class PaketUmrohResource extends Resource
                             Forms\Components\DatePicker::make(
                                 "tanggal_berangkat",
                             )
-                                ->required()
+                                ->native(false)
                                 ->label("Tanggal Berangkat"),
 
                             Forms\Components\DatePicker::make("tanggal_pulang")
-                                ->required()
+                                ->native(false)
                                 ->label("Tanggal Pulang"),
 
                             Forms\Components\TextInput::make("durasi_hari")

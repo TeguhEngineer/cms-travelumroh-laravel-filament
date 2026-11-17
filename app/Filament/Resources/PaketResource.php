@@ -111,11 +111,53 @@ class PaketResource extends Resource
                         ->schema([
                             Forms\Components\TextInput::make("price")
                                 ->required()
+                                ->type("text")
+                                ->inputMode("numeric")
+                                ->extraInputAttributes([
+                                    "x-on:input" =>
+                                        '$event.target.value = $event.target.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".")',
+                                ])
+                                ->stripCharacters(".")
+                                ->formatStateUsing(
+                                    fn($state) => filled($state)
+                                        ? number_format(
+                                            (float) str_replace(
+                                                ".",
+                                                "",
+                                                (string) $state,
+                                            ),
+                                            0,
+                                            ",",
+                                            ".",
+                                        )
+                                        : null,
+                                )
                                 ->numeric()
                                 ->prefix("Rp")
                                 ->label("Harga Normal"),
 
                             Forms\Components\TextInput::make("discount_price")
+                                ->type("text")
+                                ->inputMode("numeric")
+                                ->extraInputAttributes([
+                                    "x-on:input" =>
+                                        '$event.target.value = $event.target.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".")',
+                                ])
+                                ->stripCharacters(".")
+                                ->formatStateUsing(
+                                    fn($state) => filled($state)
+                                        ? number_format(
+                                            (float) str_replace(
+                                                ".",
+                                                "",
+                                                (string) $state,
+                                            ),
+                                            0,
+                                            ",",
+                                            ".",
+                                        )
+                                        : null,
+                                )
                                 ->numeric()
                                 ->prefix("Rp")
                                 ->label("Harga Diskon")
@@ -124,11 +166,11 @@ class PaketResource extends Resource
                             Forms\Components\DatePicker::make(
                                 "tanggal_berangkat",
                             )
-                                ->required()
+                                ->native(false)
                                 ->label("Tanggal Berangkat"),
 
                             Forms\Components\DatePicker::make("tanggal_pulang")
-                                ->required()
+                                ->native(false)
                                 ->label("Tanggal Pulang"),
 
                             Forms\Components\TextInput::make("durasi_hari")
