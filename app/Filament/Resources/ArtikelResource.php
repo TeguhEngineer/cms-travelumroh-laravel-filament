@@ -9,6 +9,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use App\Filament\Resources\ArtikelResource\Pages;
 
 class ArtikelResource extends Resource
@@ -59,8 +61,23 @@ class ArtikelResource extends Resource
             Forms\Components\RichEditor::make("konten")
                 ->required()
                 ->columnSpanFull()
-                ->label("Konten Artikel")
+                ->label("Konten Artikel (gambar max 3 MB)")
+                ->fileAttachmentsDisk("public")
+                ->fileAttachmentsDirectory("artikel-content")
+                ->fileAttachmentsVisibility("public")
+                ->saveUploadedFileAttachmentsUsing(function (
+                    TemporaryUploadedFile $file,
+                ): string {
+                    if (($file->getSize() ?? 0) > 3 * 1024 * 1024) {
+                        throw ValidationException::withMessages([
+                            "konten" => "Ukuran gambar maksimal 3 MB.",
+                        ]);
+                    }
+
+                    return $file->storePublicly("artikel-content", "public");
+                })
                 ->toolbarButtons([
+                    "attachFiles",
                     "bold",
                     "italic",
                     "underline",
