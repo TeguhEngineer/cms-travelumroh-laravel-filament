@@ -501,6 +501,10 @@ class PaketHajiResource extends Resource
                     ->boolean()
                     ->label("Featured"),
 
+                Tables\Columns\IconColumn::make("is_promo")
+                    ->boolean()
+                    ->label("Promo"),
+
                 Tables\Columns\IconColumn::make("aktif")
                     ->boolean()
                     ->label("Status"),
@@ -522,6 +526,12 @@ class PaketHajiResource extends Resource
                     ->placeholder("Semua")
                     ->trueLabel("Featured")
                     ->falseLabel("Regular"),
+
+                Tables\Filters\TernaryFilter::make("is_promo")
+                    ->label("Paket Promo")
+                    ->placeholder("Semua")
+                    ->trueLabel("Promo")
+                    ->falseLabel("Non-promo"),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
