@@ -115,11 +115,7 @@ class PaketUmrohResource extends Resource
                                 ->formatStateUsing(
                                     fn($state) => filled($state)
                                         ? number_format(
-                                            (float) str_replace(
-                                                ".",
-                                                "",
-                                                (string) $state,
-                                            ),
+                                            (float) $state,
                                             0,
                                             ",",
                                             ".",
@@ -225,11 +221,7 @@ class PaketUmrohResource extends Resource
                                 ->formatStateUsing(
                                     fn($state) => filled($state)
                                         ? number_format(
-                                            (float) str_replace(
-                                                ".",
-                                                "",
-                                                (string) $state,
-                                            ),
+                                            (float) $state,
                                             0,
                                             ",",
                                             ".",
