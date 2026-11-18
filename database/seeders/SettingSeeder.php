@@ -17,7 +17,7 @@ class SettingSeeder extends Seeder
         }
 
         Setting::create([
-            'company_name' => 'Asella Wisata',
+            'company_name' => 'Asela Tours & Travel',
             'company_description' => 'Biro perjalanan haji & umroh terpercaya dengan izin resmi Kemenag.',
             'nomor_sk_umroh' => 'SK-UMROH-2024-001',
             'nomor_sk_haji' => 'SK-HAJI-2024-001',
@@ -30,12 +30,12 @@ class SettingSeeder extends Seeder
             'instagram' => 'https://instagram.com/asellawisata',
             'youtube' => 'https://youtube.com/@asellawisata',
             'tiktok' => 'https://tiktok.com/@asellawisata',
-            'seo_title' => 'Asella Wisata - Travel Haji & Umroh Terpercaya',
-            'seo_description' => 'Wujudkan perjalanan ibadah haji dan umroh yang aman, nyaman, dan berkesan bersama Asella Wisata.',
+            'seo_title' => 'Asela Tours & Travel - Travel Haji & Umroh Terpercaya',
+            'seo_description' => 'Wujudkan perjalanan ibadah haji dan umroh yang aman, nyaman, dan berkesan bersama Asela Tours & Travel.',
             'seo_keywords' => 'umroh, haji, travel umroh, paket umroh, paket haji',
             'cover_title' => 'Wujudkan Perjalanan Ibadah Impian Anda',
             'cover_subtitle' => 'Berangkat haji & umroh dengan bimbingan sesuai sunnah, fasilitas nyaman, dan harga transparan.',
-            'deskripsi_perusahaan' => '<p><strong>Asella Wisata</strong> adalah biro perjalanan haji dan umroh yang berkomitmen memberikan pelayanan terbaik bagi para tamu Allah.</p>',
+            'deskripsi_perusahaan' => '<p><strong>Asela Tours & Travel</strong> adalah biro perjalanan haji dan umroh yang berkomitmen memberikan pelayanan terbaik bagi para tamu Allah.</p>',
             'visi' => 'Menjadi biro perjalanan haji & umroh paling dipercaya di Indonesia.',
             'misi' => "1. Memberikan pelayanan prima sesuai sunnah.\n2. Menjamin kenyamanan dan keamanan jamaah.\n3. Harga transparan tanpa biaya tersembunyi.",
         ]);
